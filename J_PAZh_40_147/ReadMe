@@ -1,0 +1,61 @@
+J/PAZh/40/147       BVI_c_ light curves of 57 Cepheids       (Berdnikov+, 2014)
+================================================================================
+CCD BVI_c_ observations of Cepheids.
+    Berdnikov L.N., Kniazev A.Yu., Sefako R., Kravtsov V.V., Zhujko S.V.
+   <Pis'ma Astron. Zh. 40, 147 (2014)>
+   =2014PAZh...40..147B
+   =2014AstL...40..125B
+================================================================================
+ADC_Keywords: Stars, variable ; Photometry, CCD
+Keywords: Cepheids - photometry
+
+Abstract:
+    In 2008-2013, we obtained 11333 CCD BV Ic frames for 57 Cepheids from
+    the General Catalogue of Variable Stars. We performed our observations
+    with the 76-cm telescope of the South AfricanAstronomicalObservatory
+    (SAAO, South Africa) and the 40-cm telescope of the Cerro Armazones
+    Astronomical Observatory of the Universidad Catolica del Norte
+    (OCA, Chile) using the SBIG ST-10XME CCD camera. The tables of
+    observations, the plots of light curves, and the current light
+    elements are presented. Comparison of our light curves with those
+    constructed from photoelectric observations shows that the differences
+    between their mean magnitudes exceed 0.05mag in 20% of the cases. This
+    suggests the necessity of performing CCD observations for all
+    Cepheids.
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+table2.dat     31       57   Light elements for Cepheids
+table1.dat     30    11333   CCD observations of Cepheids
+--------------------------------------------------------------------------------
+
+See also:
+   B/gcvs : General Catalogue of Variable Stars (Samus+ 2007-2013)
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  A9    ---     Name      Star name
+  12- 22  F11.3 d       HJD       Initial epoch
+  24- 31  F8.5  d       Per       Period
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  A9    ---     Name      Star name
+  11- 20  F10.4 d       HJD       Heliocentric Julain date (HJD-2400000)
+  22- 23  A2    ---     Filt      [BV Ic] Filter
+  25- 30  F6.3  mag     mag       Magnitude in filter
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Leonid Berdnikov, leonid.berdnikov(at)gmail.com
+
+================================================================================
+(End)                                      Patricia Vannier [CDS]    01-Apr-2014

@@ -1,0 +1,78 @@
+II/285    Photoelectric observations of Cepheids in UBV(RI)c  (Berdnikov, 2008)
+================================================================================
+Photoelectric observations of Cepheid variables in UBV(RI)c
+     Berdnikov L.N.
+    <Sternberg Astronomical Institute, Moscow (2008)>
+    =2008yCat.2285....0B
+================================================================================
+ADC_Keywords: Stars, variable ; Photometry, UBVRI
+
+Description:
+    This catalog gathers the observation of 894 Cepheids made between
+    1986 to 2004.
+
+    Observations are listed in alphabetical order of the constellations.
+    The standard deviation for every magnitude and color is 0.01mag.
+
+    This version supersedes the 1997 edition (Cat. <II/217>)
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+stars.dat      67      577   Main information of Cepheids
+photo.dat      70    70031   UBVRIc-observations
+refs.dat       58       71   References of observations
+--------------------------------------------------------------------------------
+
+See also:
+    II/250 : Combined General Catalogue of Variable Stars (Samus+ 2004)
+
+Byte-by-byte Description of file: stars.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Name      Name of Cepheid
+  11- 12  I2    h       RAh       Right Ascension (J2000) (hours)
+  14- 15  I2    min     RAm       Right Ascension (J2000) (minutes)
+  17- 20  F4.1  s       RAs       Right Ascension (J2000) (seconds)
+      22  A1    ---     DE-       Declination (J2000) (sign)
+  23- 24  I2    deg     DEd       Declination (J2000) (degrees)
+  26- 27  I2    arcmin  DEm       Declination (J2000) (minutes)
+  29- 30  I2    arcsec  DEs       Declination (J2000) (seconds)
+      32  A1    ----  l_Vmin      Limit flag on Vmin
+  33- 37  F5.2  mag     Vmin      Minimal V magnitude
+  39- 43  F5.2  mag     Vmax      Maximal V magnitude
+      44  A1    ---   u_Vmax      Uncertainty flag on Vmax
+  46- 53  A8    ---     Type      Type of Cepheid
+  55- 66  F12.8 d       Per       ? Period (from GCVS, Cat. II/250)
+      67  A1    ---   u_Per       Uncertainty flag on Per
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: photo.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Name      Name of Cepheid
+  12- 14  I3    ---     Ref       Reference number, detailed in file "refs.dat"
+  17- 28  F12.4 d       JD        [2443639/2453119] Julian date
+  30- 35  F6.3  mag     Vmag      ? V (Johnson) magnitude
+  37- 42  F6.3  mag     U-B       ? U-B (Johnson) color index
+  44- 49  F6.3  mag     B-V       ? B-V (Johnson) color index
+  51- 56  F6.3  mag     V-Rc      ? (V-R)c (Cousins) color index
+  58- 63  F6.3  mag     Rc-Ic     ? (R-I)c (Cousins) color index
+  65- 70  F6.3  mag     V-Ic      ? (V-I)c (Cousins) color index
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: refs.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  I3    ---     Ref       Ref number
+   5- 23  A19   ---     BibCode   BibCode
+  25- 58  A34   ---     Aut       Author's name
+--------------------------------------------------------------------------------
+
+================================================================================
+(End)                                    Veta Avedisova [INASAN]     14-Apr-2008

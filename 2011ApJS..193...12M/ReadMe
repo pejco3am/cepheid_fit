@@ -1,0 +1,210 @@
+J/ApJS/193/12    JHK photometry of Northern Galactic Cepheids    (Monson+, 2011)
+================================================================================
+Near-infrared (JHK) photometry of 131 Northern Galactic classical Cepheids.
+    Monson A.J., Pierce M.J.
+   <Astrophys. J. Suppl. Ser., 193, 12 (2011)>
+   =2011ApJS..193...12M
+================================================================================
+ADC_Keywords: Stars, variable ; Photometry, infrared
+Keywords: infrared: stars - stars: variables: Cepheids
+
+Abstract:
+    Near-infrared photometric measurements for 131 Northern Galactic
+    Cepheids are presented. The Cepheid light curves are sampled with an
+    average of 22 measurements per star fully covering the phase of each
+    Cepheid. The J, H, and K light curves for each Cepheid were uniformly
+    interpolated to find the intensity mean magnitudes within each band.
+    The results are consistent within +/-1% for 26 stars in common with
+    previous studies. This paper is the first in a projected series of two
+    papers which will provide additional fundamental data for Cepheids in
+    the Galaxy, namely, NIR photometry and line-of-sight extinction. In
+    the course of this project, 93 additional variables were fortuitously
+    observed within the Cepheid program fields, 82 of which have
+    previously not been identified.
+
+Description:
+    All observations were obtained during a 10 month span in 2008 at the
+    University of Wyoming Red Buttes Observatory (RBO). Cepheids were
+    observed in 129 fields with the 0.6m telescope using BIRCAM (Buttes
+    Infra-Red CAMera), a near-infrared imaging camera with a 13' field of
+    view.
+    The sample was chosen from a catalog of 324 Fundamental Mode Galactic
+    Cepheids (FMGCs) compiled by Tammann et al. (2003, Cat. J/A+A/404/423).
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+table2.dat    128     1705   Photometric data for fields stars, Cepheids and
+                             other variables
+table3.dat     67     3001   Photometric observations of Cepheids
+table4.dat     82      132   Final summary of observed Cepheids and their
+                             observed NIR magnitudes
+table5.dat     64       93   Summary of serendipitous variables
+table6.dat     64     1954   Photometric data for serendipitous variables
+--------------------------------------------------------------------------------
+
+See also:
+   B/gcvs : General Catalogue of Variable Stars (Samus+ 2007-2011)
+   II/246 : 2MASS All-Sky Catalog of Point Sources (Cutri+ 2003)
+   J/A+A/462/599   : JHKs photometry of LMC cluster Cepheids (Testa+, 2007)
+   J/A+A/404/423   : BVI photometry of Galactic Cepheids (Tammann+, 2003)
+   J/A+A/383/398   : Cepheids multiphotometry (Paturel+, 2002)
+   J/A+AS/143/211  : Galactic Cepheids BVRI photometry (Berdnikov+, 2000)
+   J/AJ/116/469    : VI photometry of galactic cepheids (Metzger+ 1998)
+   J/MNRAS/289/745 : Mira variables in NGC 6749 field (Rosino+, 1997)
+   J/AJ/113/2104   : UBV photometry of 163 stars around SU Cyg (Turner+ 1997)
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label    Explanations
+--------------------------------------------------------------------------------
+   1-  3  I3    ---     Seq      Star designation in field
+                                 <[MP2011] NNN FFFFFFFFF> in Simbad (1)
+   5- 13  A9    ---     Field    BIRCAM field name (1)
+  15- 16  I2    h       RAh      Hour of Right Ascension (J2000)
+  18- 19  I2    min     RAm      Minute of Right Ascension (J2000)
+  21- 25  F5.2  s       RAs      Second of Right Ascension (J2000)
+      27  A1    ---     DE-      Sign of the Declination (J2000)
+  28- 29  I2    deg     DEd      Degree of Declination (J2000)
+  31- 32  I2    arcmin  DEm      Arcminute of Declination (J2000)
+  34- 37  F4.1  arcsec  DEs      Arcsecond of Declination (J2000)
+  39- 44  F6.3  mag     Jmag     The BIRCAM J-band magnitude
+  46- 50  F5.3  mag   e_Jmag     Error in Jmag (2)
+  52- 57  F6.3  mag     Hmag     The BIRCAM H-band magnitude
+  59- 63  F5.3  mag   e_Hmag     Error in Hmag (2)
+  65- 70  F6.3  mag     Kmag     The BIRCAM K-band magnitude
+  72- 76  F5.3  mag   e_Kmag     Error in Kmag (2)
+  78- 79  I2    ---   o_Jmag     Number of observations in Jmag
+  81- 82  I2    ---   o_Hmag     Number of observations in Hmag
+  84- 85  I2    ---   o_Kmag     Number of observations in Kmag
+  87- 92  F6.3  mag     Jmag2M   The 2MASS J-band magnitude
+  94- 99  F6.3  mag     Hmag2M   The 2MASS H-band magnitude
+ 101-106  F6.3  mag     Ksmag2M  The 2MASS Ks-band magnitude
+ 108-128  A21   ---     Note     Note on the star identity (1)
+--------------------------------------------------------------------------------
+Note (1): Table 2 contains 1481 well-observed field stars, 131 Cepheids,
+     and 92 other variables; 82 of which are likely new discoveries.
+     Cepheids are identified in column Note by "Ceph <Name>"; other name of
+     identified variables are also provided there; finally "unclassified
+     variable" are also highlighted.
+Note (2): Determined from the data (RMS/(n_obs_)^0.5).
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  A9    ---     Name      Cepheid identification
+  11- 21  F11.3 d       HJD       The Heliocentric Julian Date of measurement
+  23- 26  F4.2  ---     Phase     The Cepheid phase at observation
+  28- 33  F6.3  mag     Jmag      The BIRCAM J-band magnitude
+  35- 39  F5.3  mag   e_Jmag      Error in Jmag
+  41- 46  F6.3  mag     Hmag      The BIRCAM H-band magnitude
+  48- 52  F5.3  mag   e_Hmag      Error in Hmag
+  54- 59  F6.3  mag     Kmag      The BIRCAM K-band magnitude
+  61- 65  F5.3  mag   e_Kmag      Error in Kmag
+      67  I1    ---     Qual      ? Quality flag (1)
+--------------------------------------------------------------------------------
+Note (1): Flag as follows:
+     0 = J, H and K magnitudes were used to construct light-curve;
+     1 = J-band magnitude was omitted from constructed light-curve;
+     2 = H-band magnitude was omitted from constructed light-curve;
+     3 = J and H-band magnitudes were omitted from constructed light-curve ;
+     4 = K-band magnitude was omitted from constructed light-curve;
+     5 = J and K-band magnitudes were omitted from constructed light-curve;
+     6 = H and K-band magnitudes were omitted from constructed light-curve;
+     7 = J, H and K band magnitudes were omitted from constructed light-curve.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table4.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  A9    ---     Name      Cepheid identification
+      11  A1    ---   f_Name      [*] Additional star (1)
+  13- 14  I2    h       RAh       2MASS hour of right ascension (J2000)
+  16- 17  I2    min     RAm       2MASS minute of right ascension (J2000)
+  19- 23  F5.2  s       RAs       2MASS second of right ascension (J2000)
+      25  A1    ---     DE-       2MASS declination sign (J2000)
+  26- 27  I2    deg     DEd       2MASS degree of declination (J2000)
+  29- 30  I2    arcmin  DEm       2MASS arcminute of declination (J2000)
+  32- 35  F4.1  arcsec  DEs       2MASS arcsecond of declination (J2000)
+  37- 42  F6.4  [d]     logP      ? Logarithm of the period (2)
+  44- 49  F6.3  mag     <Jmag>    ? Intensity-weighted mean J-band magnitude
+  51- 55  F5.3  mag   e_<Jmag>    ? <Jmag> uncertainty (3)
+  57- 61  F5.3  mag     <Hmag>    ? Intensity-weighted mean H-band magnitude
+  63- 67  F5.3  mag   e_<Hmag>    ? <Hmag> uncertainty (3)
+  69- 73  F5.3  mag     <Kmag>    ? Intensity-weighted mean K-band magnitude
+  75- 79  F5.3  mag   e_<Kmag>    ? <Kmag> uncertainty (3)
+  81- 82  I2    ---     Nobs      Number of observations
+--------------------------------------------------------------------------------
+Note (1): the asterisk (*) indicates a star added by CDS, with 2MASS
+     position and number of observations, to match the photometric data
+     in table 3 (CE Cas and U Aql)
+Note (2): The table is sorted by increasing period.
+Note (3): Errors include the photometric calibration uncertainty and the
+          estimated Gaussian Local Estimation (GLOESS) averaging error.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table5.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units    Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  I3    ---      Seq       Star designation in field (1)
+                                   <[MP2011] NNN FFFFFFFFF> in Simbad
+   5- 13  A9    ---      Field     BIRCAM field name (1)
+  15- 24  A10   ---      OName     Simbad other identification if available
+      25  A1    ---    f_OName     [abc] Object type (1)
+  27- 28  I2    h        RAh       2MASS hour of right ascension (J2000)
+  30- 31  I2    min      RAm       2MASS minute of right ascension (J2000)
+  33- 37  F5.2  s        RAs       2MASS second of right ascension (J2000)
+      39  A1    ---      DE-       2MASS declination sign (J2000)
+  40- 41  I2    deg      DEd       2MASS degree of declination (J2000)
+  43- 44  I2    arcmin   DEm       2MASS arcminute of declination (J2000)
+  46- 49  F4.1  arcsec   DEs       2MASS arcsecond of declination (J2000)
+  51- 52  A2    ---    l_Per       [>=~ ] Limit flag on Per
+  53- 62  F10.6 d        Per       Period (2)
+      64  I1    ---    r_Per       ? Period reference (3)
+--------------------------------------------------------------------------------
+Note (1): Type as follows:
+   a = Eclipsing binary.
+   b = Carbon star.
+   c = QX Cas, an eclipsing binary. No variability was detected in this work
+       which may confirm recent findings (Bonaro et al. 2009AAS...21343216B)
+       that it is no longer eclipsing.
+Note (2): Subjective estimates of the periods were made by constructing
+     rough light curves and likely represent lower limits. For previously
+     identified variables, periods were taken from the literature.
+Note (3): Reference as follows:
+   1 = Rosino et al. 1997, Cat. J/MNRAS/289/745;
+   2 = Pojmanski et al. 2006, Cat. II/264;
+   3 = Kjurkchieva et al. 2007MNRAS.382..835K;
+   4 = Samus et al. 2009 (Cat. B/gcvs);
+   5 = Stephenson, 1992AJ....103..263S.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table6.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  I3    ---     Seq       Star designation in field
+                                  <[MP2011] NNN FFFFFFFFF> in Simbad
+   5- 13  A9    ---     Field     BIRCAM field name
+  15- 25  F11.3 d       HJD       Heliocentric Julian Date of measurement
+  27- 32  F6.3  mag     Jmag      The BIRCAM J-band magnitude
+  34- 38  F5.3  mag   e_Jmag      Error in Jmag (1)
+  40- 45  F6.3  mag     Hmag      The BIRCAM H-band magnitude
+  47- 51  F5.3  mag   e_Hmag      Error in Hmag (1)
+  53- 58  F6.3  mag     Kmag      The BIRCAM K-band magnitude
+  60- 64  F5.3  mag   e_Kmag      Error in Kmag (1)
+--------------------------------------------------------------------------------
+Note (1): Determined from the data (RMS/(n_obs_)^0.5).
+--------------------------------------------------------------------------------
+
+History:
+    From electronic version of the journal
+
+================================================================================
+(End)                 Greg Schwarz [AAS], Emmanuelle Perret [CDS]    06-Apr-2011

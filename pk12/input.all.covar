@@ -1,0 +1,31 @@
+1   number of galaxies
+1  galaxy ID number
+semp.gal
+input.gal.covar
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -- fit which colors if present 
+0  8  alam, ncuse
+0    1=verbose
+0    1=vary zero point vector
+1    1=vary temperature vector
+0    1=vary extinction vector
+0    1=vary Cepheid phase reference time 
+0    1=vary the individual distance (1/0) 
+0    1=vary the mean distances (1/0)
+0    1=vary the mean extinction (1/0)
+1    1=vary the temperature (1/0) 
+0    1=vary the extinction (1/0) 
+0    1=vary the radius (1/0) 
+0    1=vary the period (1/0)
+0    1=vary the radius amplitude (1/0) 
+0    1=vary the mean radial velocity (1/0) 
+0    1=vary templates 
+0    1=don't vary anything besides templates 
+0    1=just fit mean properties, not light curve 
+0 0.00001 0.00001   1=reinitialize radius, temperature
+0    1=reinitialize radial amplitude
+0 3  minimum iterations, covariance matrix flag (0,1,2) priors/mean dist/mean ext/period off  3-produce errors
+0    1=optimize prior widths 0=do not
+1    1=shut off variation of all priors
+0    1=vary data calibration 0=hold fixed
+0    1=vary each cepheid one-by-one, 0=vary all
+0   1=write out residuals etc files 0=don't
