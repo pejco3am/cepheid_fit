@@ -1,6 +1,7 @@
 struct ephemeris {
 	// information about period and phase
 	int mode;	// to allow for different functional prescription of P(t)
+	int n_per_pars;
 	double *per_pars;
 	char name[100];
 };

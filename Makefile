@@ -1,6 +1,6 @@
 CXX= g++
-CPPFLAGS= -Wall -g
-LDFLAGS= -Wall -g
+CPPFLAGS= -Wall -O3 -fopenmp
+LDFLAGS= -Wall -O3 -fopenmp
 
 OBJS=initialize.o data_io.o fitting.o data_managment.o main.o
 

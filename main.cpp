@@ -14,67 +14,74 @@ inline double SQR(const double x) {
 	return x*x;
 }
 
-
 int main () {
 
+	// establish structure for data (see data_structure.h for details) and read all data
 	data_structure all_data;
 	initialize_data_structure(&all_data);
-
 	read_data(&all_data, "all.dat");
-	ephemeris *eph = new ephemeris[NCEP_MAX];
-	initialize_ephemeris(eph);
-	read_periods(eph, "period.dat");
 
-	int cep_fit = 577;
 
-	// initialize data
+	// choose which Cepheid to work on - the correspondence between the number and the name can be found in all.dat or catalog.dat
+	int cep_fit = 21;
+
+
+	// read ephemeris information for the desired cepheid from the database
+	ephemeris eph;
+	initialize_ephemeris(&eph);
+	read_periods(&eph, "period.dat", cep_fit);
+
+	// initialize data and select only data pertinent to the Cepheid of interest
 	data_structure data;
 	initialize_data_structure(&data);
 	select_data(&all_data, &data, cep_fit);
 
-	printf("%f\n", eph[cep_fit].per_pars[0]);
+	printf("Period: %f\n", eph.per_pars[0]);
 
 	// initialize cepheid parameters
 	cep_pars my_cep_pars;
 	initialize_cep_pars(&my_cep_pars);
+	// try to read in cepheid parameters from the database
 	int in_catalog = read_cep_pars(&my_cep_pars, "cep_pars.out", cep_fit);
+	// if Cepheid not in the database, read betas from PK12, fix the F620M beta to some appropriate value, and interpolate in the original PK12 templates to get an initial guess
+	// sometimes the fitting gets lost on Fourier coefficients (crazy numbers and uncertainties for the temperature template), 
+	// then force it to read PK12 templates by commenting the "if" part and do not vary Fourier coefficients (see below).
+	// After A, rho0, etc is well established with fixed templates, you can vary the Fourier coefficients to improve the fit - this usually works
 	if (in_catalog == 0) {
 		read_beta(my_cep_pars.beta, "beta.dat");
 		my_cep_pars.beta[28] = 4.23;
-		read_fc(my_cep_pars.fc, "template.dat", eph[cep_fit].per_pars[0]);
+		read_fc(my_cep_pars.fc, "template.dat", eph.per_pars[0]);
 	}
 
 
-	// maximum fourier order is 5
-	my_cep_pars.nf = 3;
-
+	// maximum fourier order
+	my_cep_pars.nf = 10;
 
 	cepheid my_cepheid;
 	my_cepheid.p = my_cep_pars;
 	my_cepheid.d = data;
-	my_cepheid.e = eph[cep_fit];
+	my_cepheid.e = eph;
 
-	//printf("%i %f\n", my_cepheid.e.mode, my_cepheid.e.per_pars[0]);
 
+	// Maximum number of coefficients to fit - see constants.h for definition
 
 	int ncoef = N_PER_PARS_MAX + 2 + 2*NFLT_MAX + 4*NF_MAX;		// N_PER_PARS_MAX + amplitude + mean_radius +  mbar + beta + fourier
-	//printf("%i\n", ncoef);
 	double *a = new double[ncoef];
 	initialize_fitting_coefs(&my_cepheid, a);
-
 
 	mp_par pars[ncoef];
 	memset(&pars[0], 0, sizeof(pars));
 
-	initialize_fitting_pars_single(pars, ncoef);
-	vary_phase(pars);
-	vary_amp(pars);
+	// now pick which parts will we vary vary
+
+	initialize_fitting_pars_single(pars, ncoef);		// everything fixed
+	vary_phase(pars);					
+	vary_amp(pars);						// sometimes useful to initially fix amplitude to some specific value
 	vary_rho0(pars, &my_cepheid);
 	vary_meanRV(pars, &my_cepheid);
 	vary_mbar(pars, &my_cepheid);
-	vary_fc(pars, &my_cepheid);
-
-
+	//vary_beta_specific(pars, 28);				// I found that varying beta for F620M doesn't the improve the fit dramatically
+	vary_fc(pars, &my_cepheid);				// vary Fourier coefficients - useful to shutoff sometimes
 
 
 
@@ -84,10 +91,9 @@ int main () {
 	memset(&config, 0, sizeof(config));
 	config.maxiter=200;
 	result.xerror = new double[ncoef];
-	//result.covar = covar;
-
 
 	int status;
+	// actual fitting routine - see fitting.cpp for details
 	status = mpfit(calculate_residuals, my_cepheid.d.ndata, ncoef, a, pars, &config, (void *) &my_cepheid, &result);
 
 
@@ -95,11 +101,12 @@ int main () {
 	copy_fit_results_back(&my_cepheid, a);
 
 
-
-
+	// now write the outputs
 	FILE *vel = fopen("velocity.dat", "w");
 	FILE *pho = fopen("photometry.dat", "w");
 
+
+	// find standard deviations along the best-fit model
 	double diffs[NFLT_MAX], sqr_diffs[NFLT_MAX];
 	int nperflt[NFLT_MAX];
 	for (int i=0;i<NFLT_MAX;i++) {
@@ -117,6 +124,7 @@ int main () {
 		int flt_id = my_cepheid.d.iflt[i];
 		double mmodel = get_magnitude(a[index_mbar()+flt_id], a[index_beta()+flt_id], a[index_amp()], del_rho, del_tau);
 		phase = phase - floor(phase);
+		// print only data after JD 2 440 000
 		if (my_cepheid.d.jd[i] < 40000) continue;
 		if (my_cepheid.d.iflt[i]  == 0) {
 			fprintf(vel, "%f %f %f %f %f   %.3e %.3e %.3e\n", my_cepheid.d.jd[i], phase, my_cepheid.d.mag[i], vmodel, my_cepheid.d.err[i], del_rho, del_drho, del_tau);
@@ -134,7 +142,7 @@ int main () {
 	fclose(vel);
 	fclose(pho);
 
-
+	// contains finely sampled model light curves
 	FILE *mod = fopen("model.dat", "w");
 	const int NPHASE = 200;
 	for (int i=0;i<NPHASE;i++) {
@@ -151,12 +159,6 @@ int main () {
 
 	}
 	fclose(mod);
-
-
-
-
-
-
 
 
 	for (int i=0;i<NFLT_MAX;i++) {
@@ -183,25 +185,28 @@ int main () {
 	printf("      NFEV = %d\n", result.nfev);
 	printf("       BIC = %f\n", result.bestnorm+ result.nfree*log(result.nfunc));
 	printf("\n");
-	for (int i=0;i<N_PER_PARS_MAX;i++) {
+	printf("Period and phase parameters:\n");
+	for (int i=0;i<my_cepheid.e.n_per_pars;i++) {
 		printf("per par %2i = %f +/- %f %i\n", i, a[i], result.xerror[i], pars[i].fixed);
 	}
+	printf("Amplitude, rho0:\n");
 	printf("A = %f +/- %f  %i        rho0 = %f +/- %f  %i\n", a[index_amp()], result.xerror[index_amp()], pars[index_amp()].fixed, a[index_rho0()], result.xerror[index_rho0()], pars[index_rho0()].fixed);
+	printf("Parameters of individual bands (mbar, beta, and standard devitation along the best fit in each band:\n");
 	for (int i=0;i<NFLT_MAX;i++) {
 		if (my_cepheid.d.nperflt[i] < 1) continue;
-		printf("mbar %2i = %f +/- %f  %i     beta %2i = %f +/- %f  %i       %f  %f  %i\n", i, a[index_mbar()+i], result.xerror[index_mbar()+i], pars[index_mbar()+i].fixed, 
+		printf("mbar %2i = %f +/- %f  %i     beta %2i = %f +/- %f  %i     sigma  %i = %f  (N_obs=%i)\n", i, a[index_mbar()+i], result.xerror[index_mbar()+i], pars[index_mbar()+i].fixed, 
 				i, a[index_beta()+i], result.xerror[index_beta()+i], pars[index_beta()+i].fixed,
-				diffs[i], sqr_diffs[i], my_cepheid.d.nperflt[i]);
+				i, sqr_diffs[i], my_cepheid.d.nperflt[i]);
 	}
-
-	for (int i=0;i<NF_MAX;i++) {
+	printf("Fourier parameters:\n");
+	for (int i=0;i<my_cepheid.p.nf;i++) {
 		printf("%2i  %f +/- %f  %i  \t    %f +/- %f  %i      %f +/- %f  %i      %f +/- %f  %i \n", i, a[index_fc()+i], result.xerror[index_fc()+i], pars[index_fc()+i].fixed, 
 					a[index_fc()+NF_MAX+i], result.xerror[index_fc()+NF_MAX+i], pars[index_fc()+NF_MAX+i].fixed, 
 					a[index_fc()+2*NF_MAX+i], result.xerror[index_fc()+2*NF_MAX+i], pars[index_fc()+2*NF_MAX+i].fixed, 
 					a[index_fc()+3*NF_MAX+i], result.xerror[index_fc()+3*NF_MAX+i], pars[index_fc()+3*NF_MAX+i].fixed);
 	}
 
-
+	// write the fit results back to the database
 	write_cep_pars(&my_cepheid.p, "cep_pars.out", cep_fit);
 	write_periods(&my_cepheid.e, "period.dat", cep_fit);
 

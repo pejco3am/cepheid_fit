@@ -22,26 +22,37 @@ void read_data(data_structure *data, char const  *filname) {
 	data->ndata = i;
 }
 
-void read_periods(ephemeris *eph, char const *filname) {
-	int id, mode;
-	double a[10];
+void read_periods(ephemeris *eph, char const *filname, const int cep_fit) {
+	int id, mode, offset, nperpars;
 	FILE *dov = fopen(filname, "r");
-	char dummy[1000], dummy2[100];
-	while (fgets(dummy, 1000, dov)) {
-		// hard-code 10 period pars per cepheid
-		sscanf(dummy, "%i %s %i  %le %le %le %le %le %le %le %le %le %le", &id, &dummy2, &mode, &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6], &a[7], &a[8], &a[9]);
-		eph[id].mode = mode;
-		strcpy(eph[id].name, dummy2);
-		// copy cepheid period pars
-		for (int i=0;i<10;i++) eph[id].per_pars[i] = a[i];
+	char dummy[10000], dummy2[100];
+	char *dummy3;
+	while (fgets(dummy, 10000, dov)) {
+		dummy3 = dummy;
+		sscanf(dummy3, "%i %s %i %i%n", &id, dummy2, &mode, &nperpars, &offset);
+		if (id != cep_fit) continue;
+		if (nperpars > N_PER_PARS_MAX) {
+			printf("Increase N_PER_PARS_MAX\n");
+			exit(0);
+		}
+
+		eph->mode = mode;
+		eph->n_per_pars = nperpars;
+		strcpy(eph->name, dummy2);
+		dummy3 += offset;
+
+		for (int i=0;i<nperpars;i++) {
+			sscanf(dummy3, " %le%n", &eph->per_pars[i], &offset);
+			dummy3 += offset;
+		}
 	}
 	fclose(dov);
 
 }
 
 void write_ephemeris_line(ephemeris *eph, FILE *ven, const int id) {
-	fprintf(ven, "%i %s %i  %.7f", id, eph->name, eph->mode, eph->per_pars[0]);
-	for (int i=1;i<N_PER_PARS_MAX;i++) fprintf(ven, " %.3le", eph->per_pars[i]);
+	fprintf(ven, "%i %s %i %i %.7f", id, eph->name, eph->mode, eph->n_per_pars, eph->per_pars[0]);
+	for (int i=1;i<eph->n_per_pars;i++) fprintf(ven, " %.3le", eph->per_pars[i]);
 	fprintf(ven, "\n");
 }
 

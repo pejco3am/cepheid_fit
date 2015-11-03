@@ -57,12 +57,10 @@ void initialize_cep_pars(cep_pars *cep) {
 
 
 void initialize_ephemeris(ephemeris *eph) {
-		for (int i=0;i<NCEP_MAX;i++) {
-			eph[i].mode = -10;		// negative value indicates info not available
-			eph[i].per_pars = new double[N_PER_PARS_MAX];
-			eph[i].per_pars[0] = -10.00;	// negative period indicates info not available
-			for (int j=1;j<N_PER_PARS_MAX;j++) eph[i].per_pars[j] = 0.0;	// zero all other parameters
-	}
+	eph->mode = -10;					// negative value indicates info not available
+	eph->per_pars = new double[N_PER_PARS_MAX];
+	eph->per_pars[0] = -10.00;			// negative period indicates info not available
+	for (int j=1;j<N_PER_PARS_MAX;j++) eph->per_pars[j] = 0.0;	// zero all other parameters
 }
 
 void initialize_fitting_pars_single(mp_par *pars, const int ncoef) {
