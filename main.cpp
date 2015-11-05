@@ -14,16 +14,8 @@ inline double SQR(const double x) {
 	return x*x;
 }
 
-int main () {
 
-	// establish structure for data (see data_structure.h for details) and read all data
-	data_structure all_data;
-	initialize_data_structure(&all_data);
-	read_data(&all_data, "all.dat");
-
-
-	// choose which Cepheid to work on - the correspondence between the number and the name can be found in all.dat or catalog.dat
-	int cep_fit = 21;
+void fit_single(data_structure &all_data, const int cep_fit) {
 
 
 	// read ephemeris information for the desired cepheid from the database
@@ -36,15 +28,16 @@ int main () {
 	initialize_data_structure(&data);
 	select_data(&all_data, &data, cep_fit);
 
-	printf("Period: %f\n", eph.per_pars[0]);
+	printf("-----------------------------\nCepheid: %i %s, Period: %f\n", cep_fit, eph.name, eph.per_pars[0]);
 
 	// initialize cepheid parameters
 	cep_pars my_cep_pars;
 	initialize_cep_pars(&my_cep_pars);
 	// try to read in cepheid parameters from the database
 	int in_catalog = read_cep_pars(&my_cep_pars, "cep_pars.out", cep_fit);
+
 	// if Cepheid not in the database, read betas from PK12, fix the F620M beta to some appropriate value, and interpolate in the original PK12 templates to get an initial guess
-	// sometimes the fitting gets lost on Fourier coefficients (crazy numbers and uncertainties for the temperature template), 
+	// sometimes the fitting gets lost on Fourier coefficients (crazy numbers and uncertainties for the temperature template),
 	// then force it to read PK12 templates by commenting the "if" part and do not vary Fourier coefficients (see below).
 	// After A, rho0, etc is well established with fixed templates, you can vary the Fourier coefficients to improve the fit - this usually works
 	if (in_catalog == 0) {
@@ -75,7 +68,7 @@ int main () {
 	// now pick which parts will we vary vary
 
 	initialize_fitting_pars_single(pars, ncoef);		// everything fixed
-	vary_phase(pars);					
+	vary_phase(pars);
 	vary_amp(pars);						// sometimes useful to initially fix amplitude to some specific value
 	vary_rho0(pars, &my_cepheid);
 	vary_meanRV(pars, &my_cepheid);
@@ -194,21 +187,49 @@ int main () {
 	printf("Parameters of individual bands (mbar, beta, and standard devitation along the best fit in each band:\n");
 	for (int i=0;i<NFLT_MAX;i++) {
 		if (my_cepheid.d.nperflt[i] < 1) continue;
-		printf("mbar %2i = %f +/- %f  %i     beta %2i = %f +/- %f  %i     sigma  %i = %f  (N_obs=%i)\n", i, a[index_mbar()+i], result.xerror[index_mbar()+i], pars[index_mbar()+i].fixed, 
+		printf("mbar %2i = %f +/- %f  %i     beta %2i = %f +/- %f  %i     sigma  %i = %f  (N_obs=%i)\n", i, a[index_mbar()+i], result.xerror[index_mbar()+i], pars[index_mbar()+i].fixed,
 				i, a[index_beta()+i], result.xerror[index_beta()+i], pars[index_beta()+i].fixed,
 				i, sqr_diffs[i], my_cepheid.d.nperflt[i]);
 	}
 	printf("Fourier parameters:\n");
 	for (int i=0;i<my_cepheid.p.nf;i++) {
-		printf("%2i  %f +/- %f  %i  \t    %f +/- %f  %i      %f +/- %f  %i      %f +/- %f  %i \n", i, a[index_fc()+i], result.xerror[index_fc()+i], pars[index_fc()+i].fixed, 
-					a[index_fc()+NF_MAX+i], result.xerror[index_fc()+NF_MAX+i], pars[index_fc()+NF_MAX+i].fixed, 
-					a[index_fc()+2*NF_MAX+i], result.xerror[index_fc()+2*NF_MAX+i], pars[index_fc()+2*NF_MAX+i].fixed, 
+		printf("%2i  %f +/- %f  %i  \t    %f +/- %f  %i      %f +/- %f  %i      %f +/- %f  %i \n", i+1, a[index_fc()+i], result.xerror[index_fc()+i], pars[index_fc()+i].fixed,
+					a[index_fc()+NF_MAX+i], result.xerror[index_fc()+NF_MAX+i], pars[index_fc()+NF_MAX+i].fixed,
+					a[index_fc()+2*NF_MAX+i], result.xerror[index_fc()+2*NF_MAX+i], pars[index_fc()+2*NF_MAX+i].fixed,
 					a[index_fc()+3*NF_MAX+i], result.xerror[index_fc()+3*NF_MAX+i], pars[index_fc()+3*NF_MAX+i].fixed);
 	}
+
+	printf("%s %.3f %.3f %.3f %.3f\n", eph.name, sqr_diffs[3], sqr_diffs[4], sqr_diffs[5], sqr_diffs[28]);
 
 	// write the fit results back to the database
 	write_cep_pars(&my_cepheid.p, "cep_pars.out", cep_fit);
 	write_periods(&my_cepheid.e, "period.dat", cep_fit);
+
+
+}
+
+
+
+int main () {
+	// establish structure for data (see data_structure.h for details) and read all data
+	data_structure all_data;
+	initialize_data_structure(&all_data);
+	read_data(&all_data, "all.dat");
+
+
+	// choose which Cepheid to work on - the correspondence between the number and the name can be found in all.dat or catalog.dat
+	fit_single(all_data, 21);	// AQ Car
+	fit_single(all_data, 57);	// CD Cyg
+	fit_single(all_data, 34);	// DD Cas
+	fit_single(all_data, 577);	// HW Car
+	fit_single(all_data, 11);	// SS CMa
+	fit_single(all_data, 52);	// SZ Cyg
+	fit_single(all_data, 82);	// VX Per
+	fit_single(all_data, 18);	// XY Car
+	fit_single(all_data, 19);	// XZ Car
+	fit_single(all_data, 105);	// Z Sct
+	fit_single(all_data, 88);	// AQ Pup
+
 
 
 }
